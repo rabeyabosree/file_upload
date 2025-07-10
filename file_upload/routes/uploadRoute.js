@@ -3,11 +3,13 @@ const upload = require("../utilis/multer")
 
 const router = express.Router();
 
-router.post("/upload", upload.array("multipleImg", 2), (req, res) => {
+router.post("/upload", upload.fields([{ name: "multipleImg", maxCount: 2 }, { name: "singleImg", maxCount: 1 }, { name: "video", maxCount: 1 }]), (req, res) => {
     try {
-        const { singleImg } = req.file;
-        
 
+        const multipleImg = req.files.multipleImg
+        const singleImg = req.files.singleImg?.[0]
+        const video = req.files.video?.[0]
+        console.log(multipleImg)
         res.status(200).json({ message: "Img file uploaded successfully" })
     }
     catch (error) {
